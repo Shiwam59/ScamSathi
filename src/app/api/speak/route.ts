@@ -29,6 +29,7 @@ export async function POST(req: NextRequest) {
         headers: {
           'Content-Type': 'audio/mpeg',
           'Cache-Control': 'public, max-age=3600',
+          'X-Transcript': encodeURIComponent(scriptText),
         },
       });
     }

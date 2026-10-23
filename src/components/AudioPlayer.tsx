@@ -9,6 +9,7 @@ interface AudioPlayerProps {
 
 export function AudioPlayer({ checklistId }: AudioPlayerProps) {
   const [isPlaying, setIsPlaying] = useState(false);
+  const [isPaused, setIsPaused] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [transcript, setTranscript] = useState<string>('');
   const [showTranscript, setShowTranscript] = useState(false);
@@ -24,17 +25,46 @@ export function AudioPlayer({ checklistId }: AudioPlayerProps) {
       audioRef.current.pause();
       audioRef.current.currentTime = 0;
     }
-    if ('speechSynthesis' in window) {
+    if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
       window.speechSynthesis.cancel();
     }
     setIsPlaying(false);
+    setIsPaused(false);
     setIsLoading(false);
   };
 
+  const handlePause = () => {
+    if (audioRef.current && isPlaying) {
+      audioRef.current.pause();
+    }
+    if (typeof window !== 'undefined' && 'speechSynthesis' in window && window.speechSynthesis.speaking) {
+      window.speechSynthesis.pause();
+    }
+    setIsPaused(true);
+    setIsPlaying(false);
+  };
+
   const handlePlay = async () => {
+    // If currently playing, pause
     if (isPlaying) {
-      handleStop();
+      handlePause();
       return;
+    }
+
+    // If currently paused, resume
+    if (isPaused) {
+      if (audioRef.current && audioRef.current.src) {
+        await audioRef.current.play().catch(() => {});
+        setIsPlaying(true);
+        setIsPaused(false);
+        return;
+      }
+      if (typeof window !== 'undefined' && 'speechSynthesis' in window && window.speechSynthesis.paused) {
+        window.speechSynthesis.resume();
+        setIsPlaying(true);
+        setIsPaused(false);
+        return;
+      }
     }
 
     setIsLoading(true);
@@ -47,6 +77,14 @@ export function AudioPlayer({ checklistId }: AudioPlayerProps) {
       });
 
       const contentType = response.headers.get('content-type') || '';
+      const headerTranscript = response.headers.get('x-transcript');
+      if (headerTranscript) {
+        try {
+          setTranscript(decodeURIComponent(headerTranscript));
+        } catch {
+          // ignore uri decode error
+        }
+      }
 
       if (contentType.includes('audio/mpeg')) {
         const blob = await response.blob();
@@ -56,13 +94,17 @@ export function AudioPlayer({ checklistId }: AudioPlayerProps) {
           audioRef.current = new Audio();
         }
         audioRef.current.src = url;
-        audioRef.current.onended = () => setIsPlaying(false);
+        audioRef.current.onended = () => {
+          setIsPlaying(false);
+          setIsPaused(false);
+        };
         audioRef.current.onerror = () => {
           fallbackSpeech();
         };
 
         await audioRef.current.play();
         setIsPlaying(true);
+        setIsPaused(false);
         setIsLoading(false);
         return;
       }
@@ -83,9 +125,10 @@ export function AudioPlayer({ checklistId }: AudioPlayerProps) {
   };
 
   const fallbackSpeech = (textToSpeak?: string) => {
-    if (!('speechSynthesis' in window)) {
+    if (typeof window === 'undefined' || !('speechSynthesis' in window)) {
       alert('Voice guidance is not supported by your browser.');
       setIsPlaying(false);
+      setIsPaused(false);
       return;
     }
 
@@ -97,11 +140,18 @@ export function AudioPlayer({ checklistId }: AudioPlayerProps) {
     window.speechSynthesis.cancel();
     const utterance = new SpeechSynthesisUtterance(script);
     utterance.rate = 0.95;
-    utterance.onend = () => setIsPlaying(false);
-    utterance.onerror = () => setIsPlaying(false);
+    utterance.onend = () => {
+      setIsPlaying(false);
+      setIsPaused(false);
+    };
+    utterance.onerror = () => {
+      setIsPlaying(false);
+      setIsPaused(false);
+    };
 
     window.speechSynthesis.speak(utterance);
     setIsPlaying(true);
+    setIsPaused(false);
   };
 
   return (
@@ -138,18 +188,18 @@ export function AudioPlayer({ checklistId }: AudioPlayerProps) {
 
         <div className="flex-1 space-y-1">
           <span className="text-xs font-semibold text-white block">
-            {isPlaying ? 'Playing safety instructions...' : 'English - Ready to play'}
+            {isPlaying ? 'Playing safety instructions...' : isPaused ? 'Paused — Click to resume' : 'English — Ready to play'}
           </span>
           <div className="w-full bg-white/20 h-1 rounded-full overflow-hidden">
-            <div className={`bg-emerald-300 h-full ${isPlaying ? 'w-2/3 animate-pulse' : 'w-0'}`} />
+            <div className={`bg-emerald-300 h-full ${isPlaying ? 'w-2/3 animate-pulse' : isPaused ? 'w-1/3' : 'w-0'}`} />
           </div>
         </div>
 
-        {isPlaying && (
+        {(isPlaying || isPaused) && (
           <button
             type="button"
             onClick={handleStop}
-            className="p-1.5 rounded-lg text-emerald-200 hover:text-white transition"
+            className="p-1.5 rounded-lg text-emerald-200 hover:text-white transition cursor-pointer"
             aria-label="Stop audio"
           >
             <Square className="w-4 h-4" />

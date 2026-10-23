@@ -1,4 +1,5 @@
 import { getDatabase } from './mongo';
+import { redactList } from '@/lib/privacy/redact';
 
 export interface AnonymizedReport {
   id?: string;
@@ -21,6 +22,7 @@ const memoryReports: AnonymizedReport[] = [];
 export async function saveReport(report: Omit<AnonymizedReport, 'id' | 'created_at'>): Promise<void> {
   const newReport: AnonymizedReport = {
     ...report,
+    indicators: redactList(report.indicators || []),
     created_at: new Date().toISOString(),
   };
 

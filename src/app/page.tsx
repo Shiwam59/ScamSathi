@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ArrowLeft, Clock, PauseCircle, Search, ShieldCheck, LifeBuoy } from 'lucide-react';
 import { InputForm, SubmitPayload } from '@/components/InputForm';
 import { LoadingSteps } from '@/components/LoadingSteps';
@@ -18,6 +18,20 @@ export default function HomePage() {
   const [hasImage, setHasImage] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [result, setResult] = useState<AnalysisResult | null>(null);
+
+  useEffect(() => {
+    const checkHash = () => {
+      if (typeof window !== 'undefined') {
+        if (window.location.hash === '#rescue' || window.location.search.includes('rescue')) {
+          setViewMode('rescue');
+        }
+      }
+    };
+
+    checkHash();
+    window.addEventListener('hashchange', checkHash);
+    return () => window.removeEventListener('hashchange', checkHash);
+  }, []);
 
   const handleSubmit = async (payload: SubmitPayload) => {
     setState('loading');

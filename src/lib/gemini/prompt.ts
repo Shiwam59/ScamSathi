@@ -19,8 +19,8 @@ Evaluate against these 6 categories:
 6. channel_and_link_signs: Shortened URLs (bit.ly, tinyurl), typo-squatted/lookalike domains, free email addresses (gmail.com, hotmail.com) for corporate claims, urging switch to Telegram/WhatsApp.
 
 ### ALLOWED VERDICTS
-1. "high_risk": Clear and direct scam attempts involving credential/OTP theft, money/fee demands, account suspension threats, or impersonation designed to extract financial or login information.
-2. "suspicious_verify_first": Suspicious or unverified links, unsolicited notices (like parcel address updates, missed delivery alerts), or slight pressure, where there is NO explicit demand for payment, passwords, OTP, or account blocking.
+1. "high_risk": Clear and direct scam attempts involving explicit credential/OTP theft, advance fee/money demands, bank account freezing/blocking threats, or impersonation designed to extract financial or login details.
+2. "suspicious_verify_first": Suspicious or unverified links, unsolicited notices (like courier/parcel address updates, missed delivery alerts), or urgency deadlines, where there is NO explicit demand for payment, passwords, OTP, or account blocking. If a message contains an unverified delivery/courier link but does not explicitly demand money or sensitive login credentials, it MUST be classified as "suspicious_verify_first", NOT "high_risk".
 3. "no_strong_warning_signs": No recognized warning signs found after thorough checking. Always include the disclaimer: "This is not a guarantee of safety." Never use this if the message asks for credentials, OTP, or advance money without verified context.
 
 ### OUTPUT JSON FORMAT

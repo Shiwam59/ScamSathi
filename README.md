@@ -51,11 +51,19 @@ Copy `.env.example` to `.env.local` and configure your API keys:
 cp .env.example .env.local
 ```
 
-Fill in the required server-side secrets:
+Fill in the server-side secrets:
 ```env
+# Required for AI analysis
 GEMINI_API_KEY=your_gemini_api_key_here
+
+# Optional: Live threat detection for links
+GOOGLE_SAFE_BROWSING_API_KEY=your_safe_browsing_api_key_here
+
+# Optional: Natural AI voice guidance
 ELEVENLABS_API_KEY=your_elevenlabs_api_key_here
 ELEVENLABS_VOICE_ID=your_elevenlabs_voice_id_here
+
+# Optional: Session history persistence
 MONGODB_URI=your_mongodb_connection_string_here
 ```
 
@@ -73,7 +81,17 @@ npm start
 
 ### 6. Running Tests
 ```bash
+# Core AI engine and sample tests
 npm run test:samples
+
+# Safe Browsing lookup unit tests
+npx tsx tests/safeBrowsing.test.ts
+
+# Emergency Rescue checklists & API tests
+npx tsx tests/rescue.test.ts
+
+# History, PII redaction, and Voice tests
+npx tsx tests/history_voice.test.ts
 ```
 
 ---

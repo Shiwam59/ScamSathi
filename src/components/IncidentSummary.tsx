@@ -29,9 +29,30 @@ Emergency Actions Advised: Contact 1930 & Bank Freeze Requested
 Official Reporting Portal: ${OFFICIAL_HELPLINES.portalUrl} (Toll-Free: ${OFFICIAL_HELPLINES.number})`;
 
   const handleCopy = () => {
-    navigator.clipboard.writeText(incidentSummary);
+    if (typeof navigator !== 'undefined' && navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(incidentSummary).catch(() => {
+        fallbackCopy(incidentSummary);
+      });
+    } else {
+      fallbackCopy(incidentSummary);
+    }
     setCopied(true);
     setTimeout(() => setCopied(false), 2500);
+  };
+
+  const fallbackCopy = (text: string) => {
+    try {
+      const textarea = document.createElement('textarea');
+      textarea.value = text;
+      textarea.style.position = 'fixed';
+      textarea.style.opacity = '0';
+      document.body.appendChild(textarea);
+      textarea.select();
+      document.execCommand('copy');
+      document.body.removeChild(textarea);
+    } catch (err) {
+      console.warn('Failed to copy incident summary:', err);
+    }
   };
 
   return (
