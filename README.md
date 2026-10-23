@@ -77,32 +77,32 @@ Features priority grouping into **Do now (next 15 minutes)** and **Do today**, w
 
 ```mermaid
 graph TD
-    User([User: Message / Screenshot]) --> Form[Next.js Input UI]
-    Form --> API[/api/analyze]
+    User(["User: Message / Screenshot"]) --> Form["Next.js Input UI"]
+    Form --> API["API Route: /api/analyze"]
     
-    subgraph "Verification & Analysis Engine"
-        API --> Delimiter[Untrusted Input Delimiter & Sanitizer]
-        Delimiter --> Gemini[Google Gemini Vision / Text API]
-        Delimiter --> GSB[Google Safe Browsing API]
-        Delimiter --> PatternMatcher[I4C / RBI Threat Pattern Engine]
+    subgraph Engine ["Verification & Analysis Engine"]
+        API --> Delimiter["Untrusted Input Delimiter & Sanitizer"]
+        Delimiter --> Gemini["Google Gemini Vision / Text API"]
+        Delimiter --> GSB["Google Safe Browsing API"]
+        Delimiter --> PatternMatcher["I4C / RBI Threat Pattern Engine"]
         
-        Gemini --> SchemaCheck[Zod Output Schema Validation]
-        SchemaCheck --> QuoteVerify[Anti-Hallucination Quote Verification]
-        QuoteVerify --> RiskRules[Two-Indicator Rule & Caution Enforcement]
-        GSB --> Assemble[Verified Verdict Assembler]
+        Gemini --> SchemaCheck["Zod Output Schema Validation"]
+        SchemaCheck --> QuoteVerify["Anti-Hallucination Quote Verification"]
+        QuoteVerify --> RiskRules["Two-Indicator Rule & Caution Enforcement"]
+        GSB --> Assemble["Verified Verdict Assembler"]
         PatternMatcher --> Assemble
         RiskRules --> Assemble
     end
 
-    Assemble --> UI[Interactive Verdict Banner & Evidence Cards]
-    UI --> Rescue[Scam Rescue Mode]
+    Assemble --> UI["Interactive Verdict Banner & Evidence Cards"]
+    UI --> Rescue["Scam Rescue Mode"]
     
-    subgraph "Emergency Response"
-        Rescue --> Checklist[15-Minute Priority Checklist]
-        Rescue --> Helplines[National Helpline 1930 & cybercrime.gov.in]
-        Rescue --> IncidentSummary[Copyable Incident Summary]
-        Rescue --> VoiceAPI[/api/speak]
-        VoiceAPI --> ElevenLabs[ElevenLabs TTS / Web Speech Fallback]
+    subgraph Emergency ["Emergency Response & Guidance"]
+        Rescue --> Checklist["15-Minute Priority Checklist"]
+        Rescue --> Helplines["National Helpline 1930 & cybercrime.gov.in"]
+        Rescue --> IncidentSummary["Copyable Incident Summary"]
+        Rescue --> VoiceAPI["Voice API: /api/speak"]
+        VoiceAPI --> ElevenLabs["ElevenLabs TTS / Web Speech Fallback"]
     end
 ```
 
