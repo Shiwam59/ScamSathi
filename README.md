@@ -223,9 +223,42 @@ If you or someone you know has been targeted by digital fraud:
 
 ---
 
+## 🤖 AI Models & Licensing
+
+| Component | Model / Engine | Provider | Licensing & Terms |
+|---|---|---|---|
+| **Investigation Engine** | `gemini-2.5-flash` / `gemini-3.5-flash` | Google DeepMind | [Google APIs Terms of Service](https://developers.google.com/terms) & [Gemini API Additional Terms](https://ai.google.dev/terms) |
+| **Voice Safety Guidance** | `eleven_flash_v2_5` (Sarah) | ElevenLabs | [ElevenLabs Terms of Service](https://elevenlabs.io/terms) |
+| **URL Threat Reputation** | Google Safe Browsing API (v4) | Google LLC | [Google Safe Browsing Terms of Service](https://developers.google.com/safe-browsing/v4/terms) |
+
+---
+
+## 🛠️ AI Coding Tools & Credits
+
+This project was built and accelerated using the following AI developer tools:
+- **Google Antigravity IDE** (powered by **Gemini 3.8 Flash**): Used for agentic pair-programming, full-stack Next.js 15 scaffolding, UI component implementation, anti-hallucination verification pipeline design, and comprehensive test suite creation.
+
+---
+
 ## ⚖️ Safety, Privacy & Ethics Notice
 
 - **Educational Citizen-Aid:** ScamSathi provides AI-assisted educational guidance and does not replace official law enforcement, legal counsel, or banking authority determinations.
 - **Never Guarantees Safety:** No tool can guarantee 100% safety against novel digital attacks; independent verification through official channels is always advised.
 - **Zero Data Harvesting:** ScamSathi does not store raw user text, uploaded photos, or personal financial details.
-- **Open Source:** Licensed under the [MIT License](LICENSE).
+
+---
+
+## 📄 Open Source License
+
+ScamSathi is licensed as open-source software under the **[MIT License](LICENSE)**.
+
+```
+Copyright (c) 2026 ScamSathi Contributors
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software...
+```
+See the full [LICENSE](LICENSE) file for complete terms.
