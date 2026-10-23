@@ -44,8 +44,14 @@ export default function RootLayout({
               </Link>
             </nav>
 
-            {/* Right Helpline & History */}
+            {/* Right Helpline, Accuracy & History */}
             <div className="flex items-center gap-3 shrink-0">
+              <Link
+                href="/accuracy"
+                className="text-xs font-semibold text-[#555C57] hover:text-[#154D40] px-2 py-1 transition"
+              >
+                Accuracy
+              </Link>
               <Link
                 href="/history"
                 className="text-xs font-semibold text-[#555C57] hover:text-[#154D40] px-2 py-1 transition"

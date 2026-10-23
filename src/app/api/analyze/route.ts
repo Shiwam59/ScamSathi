@@ -8,6 +8,7 @@ import { handleAppError, errorResponse } from '@/lib/errors';
 import { AnalysisResult } from '@/types/analysis';
 import { getAnonymousSessionId } from '@/lib/security/session';
 import { saveReport } from '@/lib/db/reports';
+import { findMatchingPattern } from '@/lib/knowledge/patterns';
 
 const MAX_CHARS = 5000;
 const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5 MB
@@ -156,7 +157,14 @@ export async function POST(req: NextRequest) {
       confidence_note: rawResult.confidence_note,
     });
 
-    // 8. Assemble Verified Output (elevate to high_risk if Safe Browsing confirmed threat)
+    // 8. Knowledge Base Pattern Matching
+    const matchedPattern = findMatchingPattern(
+      rawResult.extracted_text,
+      rawResult.entities,
+      rawResult.scam_category
+    );
+
+    // 9. Assemble Verified Output (elevate to high_risk if Safe Browsing confirmed threat)
     const verifiedResult: AnalysisResult = {
       ...rawResult,
       observations: quoteCheck.observations,
@@ -165,7 +173,7 @@ export async function POST(req: NextRequest) {
       confidence_note: hasThreat
         ? `High Risk: Google Safe Browsing detected confirmed malicious threat (${threatMatches.map((m) => m.threatType).join(', ')}). Immediate danger.`
         : riskRuleResult.confidence_note,
-      matched_pattern: null,
+      matched_pattern: matchedPattern,
       threat_matches: hasThreat ? threatMatches : undefined,
     };
 
