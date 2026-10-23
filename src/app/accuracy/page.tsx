@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { ShieldCheck, AlertTriangle, CheckCircle2, Clock, Cpu, ArrowLeft, Target, FileText } from 'lucide-react';
+import { ShieldCheck, AlertTriangle, CheckCircle2, Clock, Cpu, ArrowLeft, Target, FileText, Database, BookOpen } from 'lucide-react';
 import { AccuracyReport } from '@/app/api/accuracy/route';
 
 export default function AccuracyScoreboardPage() {
@@ -165,6 +165,40 @@ export default function AccuracyScoreboardPage() {
               </tr>
             </tbody>
           </table>
+        </div>
+      </div>
+
+      {/* Threat Intelligence Repository & Grounding Architecture */}
+      <div className="bg-gradient-to-br from-slate-900 to-[#0e2a22] text-white border border-emerald-900/50 rounded-2xl p-6 shadow-xs space-y-4">
+        <div className="flex items-center gap-2">
+          <Database className="w-5 h-5 text-emerald-400" />
+          <h2 className="text-base sm:text-lg font-bold text-white">
+            Threat Intelligence Repository & Grounding Pipeline
+          </h2>
+        </div>
+        <p className="text-xs sm:text-sm text-emerald-100/90 leading-relaxed font-normal">
+          Our threat intelligence repository is compiled from publicly accessible advisories issued by{' '}
+          <strong className="text-emerald-300">cybercrime.gov.in (I4C)</strong>, the{' '}
+          <strong className="text-emerald-300">RBI BE(A)WARE</strong> compendium, and open-source cybersecurity datasets on{' '}
+          <strong className="text-emerald-300">Hugging Face</strong> and{' '}
+          <strong className="text-emerald-300">Kaggle</strong>. We filtered and normalized these real-world fraud cases into structured text templates, which we vector-embed and store in Snowflake to ground the AI against verified cybercrime patterns.
+        </p>
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2 text-xs">
+          <div className="bg-white/5 border border-white/10 rounded-xl p-3.5 space-y-1">
+            <span className="text-[10px] uppercase font-bold text-emerald-400 tracking-wider">Source 01</span>
+            <div className="font-semibold text-white">I4C (cybercrime.gov.in)</div>
+            <p className="text-[11px] text-emerald-100/60 leading-normal">Official advisories, digital arrest bulletins & national cybercrime alerts.</p>
+          </div>
+          <div className="bg-white/5 border border-white/10 rounded-xl p-3.5 space-y-1">
+            <span className="text-[10px] uppercase font-bold text-emerald-400 tracking-wider">Source 02</span>
+            <div className="font-semibold text-white">RBI BE(A)WARE Booklet</div>
+            <p className="text-[11px] text-emerald-100/60 leading-normal">Comprehensive financial fraud modus operandi & KYC banking schemes.</p>
+          </div>
+          <div className="bg-white/5 border border-white/10 rounded-xl p-3.5 space-y-1">
+            <span className="text-[10px] uppercase font-bold text-emerald-400 tracking-wider">Source 03</span>
+            <div className="font-semibold text-white">Hugging Face & Kaggle</div>
+            <p className="text-[11px] text-emerald-100/60 leading-normal">Open-source SMS phishing (smishing) & digital extortion datasets.</p>
+          </div>
         </div>
       </div>
 

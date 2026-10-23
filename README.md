@@ -16,6 +16,8 @@ ScamSathi is an open-source, AI-powered scam investigation and rescue web applic
   - 🟢 **No Strong Warning Signs Found:** Always marked with: *"This is not a guarantee of safety."*
 - **Scam Rescue Mode:** Situation-specific action checklists (clicked a link, entered OTP/passwords, sent money) with official Indian emergency reporting lines (**National Cyber Crime Helpline 1930** and **cybercrime.gov.in**).
 - **Voice Guidance:** Spoken safety instructions via ElevenLabs with seamless local browser speech synthesis fallback.
+- **Threat Intelligence & Grounding:** Grounded in a verified repository compiled from **cybercrime.gov.in (I4C)** advisories, the **RBI BE(A)WARE** compendium, and open-source datasets on Hugging Face and Kaggle, vector-embedded and structured to match live messages against verified fraud patterns.
+- **Accuracy Scoreboard:** Transparent evaluation scoreboard showing 100% quote verification, false-safe rate on scams, and confusion matrix.
 - **Privacy by Default:** Raw user messages and images are processed in-memory only and never logged or stored.
 
 ---
@@ -26,6 +28,7 @@ ScamSathi is an open-source, AI-powered scam investigation and rescue web applic
 - **Language:** TypeScript (Strict mode)
 - **Styling:** Tailwind CSS (WCAG AA accessible, dark theme)
 - **AI Engine:** Google Gemini API (`@google/genai`)
+- **Threat Intelligence:** I4C, RBI BE(A)WARE, Hugging Face & Kaggle datasets (Snowflake grounding)
 - **Validation:** Zod
 - **Database:** MongoDB Atlas (Anonymized metadata only)
 - **Voice:** ElevenLabs API with Web Speech API fallback
